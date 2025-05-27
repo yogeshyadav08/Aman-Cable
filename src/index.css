@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+
+/* Ensure smooth transitions for buttons and images */
+button, img {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Subtle shadow for hero section */
+.hero-shadow {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Optional: Add a hover effect for links */
+a:hover {
+  opacity: 0.9;
+}

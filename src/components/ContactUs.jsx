@@ -44,7 +44,7 @@ const ContactUs = () => {
                   <h3 className="text-lg font-semibold text-gray-900">
                     Call Us
                   </h3>
-                  <div className="mt-2 flex space-x-4">
+                  <div className="mt-2  space-x-4">
                     {contactInfo.phones.map((phone, index) => (
                       <a
                         key={index}

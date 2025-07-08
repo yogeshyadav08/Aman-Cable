@@ -19,8 +19,26 @@ const ContactUs = () => {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
+    category: "",
+    subCategory: "",
     message: "",
   });
+
+  const [categories, setCategories] = useState([
+    { value: "", label: "Select a category" },
+    { value: "wifi", label: "📶 WiFi Installation" },
+    { value: "plan", label: "🔄 Plan Upgrade/Change" },
+    { value: "router", label: "🧰 Router Configuration" },
+    { value: "troubleshooting", label: "⚙ Troubleshooting" },
+    { value: "security", label: "🔒 Security Setup (CCTV)" },
+    { value: "cable", label: "📡 Cable/DTH Setup" },
+    { value: "recharge", label: "📲 Online Recharge Help" },
+    { value: "new", label: "📝 New Connection Request" },
+    { value: "record", label: "📁 Installation Record / Details" },
+    { value: "billing", label: "🧾 Billing or Pending Dues" },
+  ]);
+
+  const [subCategories, setSubCategories] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -36,6 +54,75 @@ const ContactUs = () => {
     };
   }, [showModal]);
 
+  const handleCategoryChange = (e) => {
+    const selectedCategory = e.target.value;
+    setFormData({
+      ...formData,
+      category: selectedCategory,
+      subCategory: "",
+    });
+
+    // Set subcategories based on selected category
+    switch (selectedCategory) {
+      case "wifi":
+        setSubCategories([
+          { value: "", label: "Select sub-category" },
+          { value: "bsnl", label: "New BSNL FTTH Setup" },
+          { value: "railtel", label: "New RailTel Setup" },
+          { value: "addon", label: "Add-on WiFi Router Setup" },
+          { value: "mesh", label: "Extend WiFi Coverage (Mesh Setup)" },
+        ]);
+        break;
+      case "plan":
+        setSubCategories([
+          { value: "", label: "Select sub-category" },
+          { value: "change_bsnl", label: "Change BSNL Plan" },
+          { value: "upgrade_railtel", label: "Upgrade RailTel Plan" },
+          { value: "check", label: "Check Current Plan" },
+          { value: "renewal", label: "Recharge or Renewal" },
+        ]);
+        break;
+      case "router":
+        setSubCategories([
+          { value: "", label: "Select sub-category" },
+          { value: "basic", label: "Basic Router Setup" },
+          { value: "port", label: "Port Forwarding" },
+          { value: "bridge", label: "Bridge Mode Setup" },
+          { value: "static", label: "Static IP Configuration" },
+        ]);
+        break;
+      case "troubleshooting":
+        setSubCategories([
+          { value: "", label: "Select sub-category" },
+          { value: "no_internet", label: "No Internet" },
+          { value: "slow", label: "Slow Speed" },
+          { value: "restart", label: "Router Restart Help" },
+          { value: "los", label: "Red LOS Blinking" },
+        ]);
+        break;
+      case "security":
+        setSubCategories([
+          { value: "", label: "Select sub-category" },
+          { value: "new_cctv", label: "New CCTV Installation" },
+          { value: "remote", label: "Remote Monitoring Setup" },
+          { value: "cloud", label: "Cloud Storage Setup" },
+          { value: "add_cameras", label: "Add More Cameras" },
+        ]);
+        break;
+      case "cable":
+        setSubCategories([
+          { value: "", label: "Select sub-category" },
+          { value: "dishtv", label: "DishTV HD Installation" },
+          { value: "multi", label: "Multi-TV Setup" },
+          { value: "language", label: "Language Pack Change" },
+          { value: "signal", label: "Signal Issue" },
+        ]);
+        break;
+      default:
+        setSubCategories([]);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -47,8 +134,13 @@ const ContactUs = () => {
   };
 
   const sendViaWhatsApp = () => {
-    const { name, phone, message } = formData;
-    const whatsappMessage = `Name: ${name}\nPhone: ${phone}\nMessage: ${message}`;
+    const { name, phone, category, subCategory, message } = formData;
+    const selectedCategory =
+      categories.find((c) => c.value === category)?.label || category;
+    const selectedSubCategory =
+      subCategories.find((s) => s.value === subCategory)?.label || subCategory;
+
+    const whatsappMessage = `Name: ${name}\nPhone: ${phone}\nCategory: ${selectedCategory}\nSub-Category: ${selectedSubCategory}\nMessage: ${message}`;
     const encodedMessage = encodeURIComponent(whatsappMessage);
     const whatsappUrl = `https://wa.me/${contactInfo.whatsapp.replace(
       /[+-\s]/g,
@@ -58,16 +150,27 @@ const ContactUs = () => {
     setIsSubmitted(true);
     setTimeout(() => {
       window.open(whatsappUrl, "_blank");
-      setFormData({ name: "", phone: "", message: "" });
+      setFormData({
+        name: "",
+        phone: "",
+        category: "",
+        subCategory: "",
+        message: "",
+      });
       setShowModal(false);
       setIsSubmitted(false);
     }, 500);
   };
 
   const sendViaEmail = () => {
-    const { name, phone, message } = formData;
+    const { name, phone, category, subCategory, message } = formData;
+    const selectedCategory =
+      categories.find((c) => c.value === category)?.label || category;
+    const selectedSubCategory =
+      subCategories.find((s) => s.value === subCategory)?.label || subCategory;
+
     const emailSubject = `Aman Cable Network Service Query from ${name}`;
-    const emailBody = `Name: ${name}\nPhone: ${phone}\nMessage: ${message}`;
+    const emailBody = `Name: ${name}\nPhone: ${phone}\nCategory: ${selectedCategory}\nSub-Category: ${selectedSubCategory}\nMessage: ${message}`;
     const mailtoUrl = `mailto:${contactInfo.email}?subject=${encodeURIComponent(
       emailSubject
     )}&body=${encodeURIComponent(emailBody)}`;
@@ -75,7 +178,13 @@ const ContactUs = () => {
     setIsSubmitted(true);
     setTimeout(() => {
       window.location.href = mailtoUrl;
-      setFormData({ name: "", phone: "", message: "" });
+      setFormData({
+        name: "",
+        phone: "",
+        category: "",
+        subCategory: "",
+        message: "",
+      });
       setShowModal(false);
       setIsSubmitted(false);
     }, 500);
@@ -243,6 +352,56 @@ const ContactUs = () => {
                       placeholder="Your Phone Number"
                     />
                   </div>
+
+                  {/* Category Dropdown */}
+                  <div>
+                    <label
+                      htmlFor="category"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Service Category
+                    </label>
+                    <select
+                      name="category"
+                      id="category"
+                      value={formData.category}
+                      onChange={handleCategoryChange}
+                      required
+                      className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300 placeholder-gray-400 bg-white"
+                    >
+                      {categories.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Sub-Category Dropdown (conditionally rendered) */}
+                  {subCategories.length > 0 && (
+                    <div>
+                      <label
+                        htmlFor="subCategory"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        Sub-Category
+                      </label>
+                      <select
+                        name="subCategory"
+                        id="subCategory"
+                        value={formData.subCategory}
+                        onChange={handleInputChange}
+                        className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300 placeholder-gray-400 bg-white"
+                      >
+                        {subCategories.map((option) => (
+                          <option key={option.value} value={option.value}>
+                            {option.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
                   <div>
                     <label
                       htmlFor="message"
@@ -255,10 +414,9 @@ const ContactUs = () => {
                       id="message"
                       value={formData.message}
                       onChange={handleInputChange}
-                      required
                       rows="4"
                       className="mt-1 block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-200 focus:ring-opacity-50 transition-all duration-300 placeholder-gray-400"
-                      placeholder="How can we help you?"
+                      placeholder="Any Other Problem?"
                     ></textarea>
                   </div>
                   <div>

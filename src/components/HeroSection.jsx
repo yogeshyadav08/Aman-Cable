@@ -130,28 +130,58 @@ export default function HeroSection() {
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-2xl text-left space-y-6">
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight tracking-wide drop-shadow-xl">
+        <div className="relative z-10 max-w-2xl text-left space-y-6 md:space-y-8">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-wide drop-shadow-xl bg-gradient-to-r from-white to-blue-100 bg-clip-text text-transparent">
             AMAN CABLE & BROADBAND
           </h1>
-          <p className="text-lg sm:text-xl md:text-2xl text-gray-200 tracking-wide">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-200 tracking-wide md:tracking-wider font-medium">
             Reliable Broadband. Clear TV. Secure Homes.
           </p>
-          <Link
-            to="contact"
-            smooth={true}
-            duration={1000}
-            offset={-80}
-            className="inline-block bg-gradient-to-r from-blue-500 to-blue-800 hover:from-blue-600 hover:to-blue-900 text-white font-semibold text-base sm:text-lg px-6 py-3 rounded-full shadow-xl transition-transform duration-300 hover:scale-105 cursor-pointer"
-          >
-            CONTACT US NOW
-          </Link>
-          <button
-            onClick={handleOpenModal}
-            className="inline-block ml-5 bg-white text-blue-500 font-semibold text-base sm:text-lg px-6 py-3 rounded-full shadow-xl transition-transform duration-300 hover:scale-105 cursor-pointer"
-          >
-            SEE OUR ACTIVE PLAN
-          </button>
+          <div className="flex flex-col sm:flex-row gap-4 w-[75%] md:gap-6">
+            <Link
+              to="contact"
+              smooth={true}
+              duration={1000}
+              offset={-80}
+              className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-800 hover:from-blue-600 hover:to-blue-900 text-white font-semibold text-base sm:text-lg px-6 py-3 rounded-full shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer group flex-shrink-0"
+            >
+              CONTACT US NOW
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                />
+              </svg>
+            </Link>
+            <button
+              onClick={handleOpenModal}
+              className="inline-flex items-center justify-center bg-white text-blue-600 hover:text-blue-800 font-semibold text-base sm:text-lg px-6 py-3 rounded-full shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer group border border-blue-100 flex-shrink-0"
+            >
+              SEE OUR ACTIVE PLAN
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 ml-2 group-hover:animate-bounce"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </section>
 
